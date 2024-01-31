@@ -1,29 +1,18 @@
-function setup() {
-  createCanvas(400, 400);
-  angleMode(DEGREES);
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-}
+    <title>Sketch</title>
 
-function draw() {
-  colorMode(RGB);
-  background('darkblue');
+    <link rel="stylesheet" type="text/css" href="style.css">
 
-  stroke('white');
-  strokeWeight(5);
-  fill('red');
-  circle(200, 200, 200);
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
 
-  stroke('white');
-  strokeWeight(5);
-  fill('green');
-  //TR
-  arc(215, 175, 155, 145, -100, 0, PIE);
-  //TL
-  arc(185, 175, 155, 145, 180, -80, PIE);
-  //B
-  arc(200, 225, 160, 150, 45, -225, PIE);
-  //L
-  arc(180, 200, 160, 180, 115, -165, PIE);
-  //R
-  arc(220, 200, 160, 180, -20, 65, PIE);
-}
+  <body>
+    <script src="example4.js"></script>
+  </body>
+</html>
