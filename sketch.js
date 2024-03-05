@@ -12,7 +12,7 @@ function preload() {
     for (let i = 0; i < 3; i++) {
       //bugImages[i] = loadImage("Assets/bugMove.png" + "Assets/bugMove2.png" + "Assets/bugDeath.png");
       //bugImages[i] = loadImage("https://tstodd1.github.io/CSC2463/Assets/bugMove.png");
-      bugImages[i] = loadImage(imageURL + "bugSprite" + (i + 1) + ".png");
+      bugImages[i] = loadImage(imageURL + "bugSprite_" + (i + 1) + ".png");
 
     }
   }
