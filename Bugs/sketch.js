@@ -1,7 +1,7 @@
 let bgImage;
 let bugImages = [];
 let imageURL = "https://tstodd1.github.io/CSC2463/Assets/"
-let testBug;
+let testBug, walk, death;
 
 function preload() {
   // bugMove = loadImage("Assets/BUG-1.png.png")
@@ -18,13 +18,14 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
-
-  testBug = createSprite(width / 200, height / 200, 32, 32);
-  testBug.addAnimation("walk", bugImages[0], bugImages[1], bugImages[0],);
+  
+  testBug = createSprite(400, 400, 320, 320);
+  walk = testBug.addAnimation("walk", bugImages[0], bugImages[1], bugImages[0],);
+  walk.frameDelay = 8;
 
 }
 
 function draw() {
   background(bgImage);
-  drawSprites();
+  drawSprite(testBug);
 }
