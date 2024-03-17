@@ -2,7 +2,10 @@ let bgImage;
 let bugImages = [];
 let bugSprites;
 let imageURL = "https://tstodd1.github.io/CSC2463/Assets/";
-let testBug, walk, death;
+let testBug;
+let walk, death;
+
+let score;
 
 function preload() {
   // bugMove = loadImage("Assets/BUG-1.png.png")
@@ -26,8 +29,9 @@ function setup() {
   //walk.frameDelay = 8;
   testBug = new Sprite();
   testBug.img = (imageURL + "bugSprite_1.png")
-  testBug.addAni('walk', imageURL + "bugSprite_1.png", 2);
-  testBug.addAni('death', imageURL + "bugSprite_3.png", 1);
+  walk = testBug.addAni('walk', imageURL + "bugSprite_1.png", 2);
+  //testBug.addAni('death', imageURL + "bugSprite_3.png", 1);
+  //testBug.addAni('death', imageURL + "bugSprite_3.png", 1);
   //testBug = new SpriteAnimation(imageURL + "bugSprite_1.png");
   //walk = loadAni(imageURL + "bugSprite_1.png", 2);
   //walk.frameDelay = 8;
@@ -40,4 +44,12 @@ function setup() {
 function draw() {
   clear();
   background(bgImage);
+
+  if (testBug.mouse.pressing()) {
+    testBug.changeAni('death', imageURL + "bugDeath.png", 1);
+    this.life = 200;
+    score++;
+  }
+
+
 }
