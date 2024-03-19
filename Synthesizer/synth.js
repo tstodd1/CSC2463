@@ -1,84 +1,129 @@
-let soundFX = new Tone.Players({
-  bite : "assets/bite.mp3",
-  fail : "assets/fail.mp3",
-  spin : "assets/spin.mp3",
-  squish : "assets/squish.mp3"
+let synth = new Tone.Synth({
+  oscillator: {
+    type: "sawtooth"
+  },
+  envelope : {
+    attack: 0.1,
+    decay: 0.1,
+    sustain: 0.1,
+    release: 0.1,
+  }
 });
+let synth2 = new Tone.PolySynth(Tone.DuoSynth);
 
-let button1, button2, button3, button4;
+let bend = new Tone.PitchShift();
+bend.pitch = 0;
+
+synth.connect(bend);
+bend.toDestination();
+
+synth2.connect(bend);
+bend.toDestination();
 
 let delayAmt = new Tone.FeedbackDelay("8n", 0.5);
+delayAmt.delayTime = 0.1;
+delayAmt.feedback = 0.1;
 let delaySlider, dFeedback;
 
-let bitCrush = new Tone.BitCrusher();
-let bcSlider;
-
-//let pShift = new Tone.PitchShift();
-//let pSlider;
-
-
-soundFX.connect(delayAmt);
+synth.connect(delayAmt);
 delayAmt.toDestination();
 
-soundFX.connect(bitCrush);
-bitCrush.toDestination();
+synth2.connect(delayAmt);
+delayAmt.toDestination();
 
-//soundFX.connect(pShift);
-//pShift.toDestination();
-//pShift.pitch = +24;
-//pShift.pitch = -24;
+let rVerb = new Tone.Reverb()
+rVerb.decay = 10;
+rVerb.wet = 1;
+let rvSlider;
 
+synth.connect(rVerb);
+synth2.connect(rVerb);
+rVerb.toDestination();
+
+let sine = new Tone.Synth({
+  oscillator: {
+    type: "sine"
+  },
+  envelope : {
+    attack: 0.1,
+    decay: 0.1,
+    sustain: 0.1,
+    release: 0.1,
+  }
+}).toDestination();
+
+
+let notes = {
+  'q' : "C4",
+  'w' : "D4",
+  'e' : "E4",
+  'r' : "F4",
+  't' : "G4",
+  'y' : "A4",
+  'u' : "B4",
+  'i' : "C5",
+  'o' : "D5",
+  'p' : "E5",
+
+  '2' : "C#4",
+  '3' : "D#4",
+  '5' : "F#4",
+  '6' : "G#4",
+  '7' : "A#4",
+  '9' : "C#5",
+  "0" : "D#5"
+}
 
 function setup() {
   createCanvas(400, 400);
 
-  ////////////////////////////buttons//////////////////////////////////////
+  mySelect = createSelect();
+  mySelect.position(136,60);
+  mySelect.option('Saw');
+  mySelect.option('Sine');
+  mySelect.option('Duo Synth');
+  mySelect.selected('Saw');
 
-  button1 = createButton('bite');
-  button1.position (85, 150);
-  button1.mousePressed (play1);
-
-  button2 = createButton('fail');
-  button2.position (125, 150);
-  button2.mousePressed (() =>soundFX.player('fail').start());
-
-  button3 = createButton('spin');
-  button3.position (160, 150);
-  button3.mousePressed (() =>soundFX.player('spin').start());
-
-  button4 = createButton('squish');
-  button4.position (200, 150);
-  button4.mousePressed (() =>soundFX.player('squish').start());
-
- ////////////////////////////sliders//////////////////////////////////////
-
+  pitchSlider = createSlider(-0.5, 0.5, 0, 0.05);
+  pitchSlider.position (10, 220);
+  pitchSlider.mouseMoved (() => bend.pitch = pitchSlider.value());
+  
   delaySlider = createSlider(0, 0.99, 0, 0.05);
-  delaySlider.position (105, 200);
+  delaySlider.position (10, 260);
   delaySlider.mouseMoved (() => delayAmt.delayTime.value = delaySlider.value());
 
-  dFeedback = createSlider(0, 0.8, 0, 0.05);
-  dFeedback.position (105, 240);
+  dFeedback = createSlider(0, 0.99, 0, 0.05);
+  dFeedback.position (10, 300);
   dFeedback.mouseMoved (() => delayAmt.feedback.value = dFeedback.value());
 
-  bcSlider = createSlider(0, 1, 0, 0.05);
-  bcSlider.position (105, 280);
-  bcSlider.mouseMoved (() => bitCrush.wet.value = bcSlider.value());
-
- // pSlider = createSlider(0, 24, 0, 0.05);
- // pSlider.position (105, 320);
- // pSlider.mouseMoved (() => pShift.pitch.value = pSlider.value());
-
-
+  // rvSlider = createSlider(0, 0.9, 0, 0.05);
+  // rvSlider.position (10, 340);
+  // rvSlider.mouseMoved (() => rVerb.decay.value = rVerb.value());
 }
 
-function play1 (){
-  soundFX.player('bite').start();
+function keyPressed() {
+  if (mySelect.selected() === 'Saw') {
+    let playNotes = notes[key];
+    synth.triggerAttackRelease(playNotes, 0.5);
+  } else if (mySelect.selected() === 'Duo Synth') {
+    let playNotes = notes[key];
+    synth2.triggerAttackRelease(playNotes, 0.008);
+  } else if (mySelect.selected() === 'Sine') {
+    let playNotes = notes[key];
+    sine.triggerAttackRelease(playNotes, 0.5);
+  }
 }
+
+//function keyReleased() {
+  //let playNotes = notes[key];
+  //synth.triggerRelease(playNotes,"+0.08");
+//}
 
 function draw() {
   background('pink');
-  text('Sampler Project', 25, 50);
-  text('Delay Time', 90, 190);
-  text('Delay Feedback', 90, 230);
-  text('Bitcrush Amount', 90, 270);
+  text("Use qwerty to play", 130, 50);
+  text('Post-FX Options', 10, 180);
+  text('Bend Pitch +-0.5', 10, 200);
+  text('Delay Time', 10, 250);
+  text('Delay Feedback', 10, 290);
 }
