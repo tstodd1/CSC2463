@@ -63,7 +63,7 @@ function mousePressed() {
     noise2.start();
     noise2.volume.rampTo(0);
 
-    sub.triggerAttackRelease("C1", "8n");
+    sub.triggerAttackRelease('C4');
     sub.volume.rampTo(0);
 
     filter.frequency.rampTo(0, 4000);
