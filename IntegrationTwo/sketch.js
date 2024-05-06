@@ -11,10 +11,9 @@ let circleSize = 10;
 let minY = 0;
 let maxY = 0;
 
+//moving the circle
 function distanceToY(distance) {
-    // Map the distance to a Y position on the canvas
     let yPos = map(distance, 0, 100, 170, 910);
-    // Constrain the Y position within the canvas height
     return constrain(yPos, 0, height);
 }
 
@@ -192,8 +191,6 @@ function oscSquare() {
     currentShape = 'square';
     colorArray = squareColorAarray;
     colorIndex = 0;
-
-    // colorArray = squareColorArray;
 }
 
 function oscSaw() {
@@ -248,10 +245,8 @@ function connect() {
 function ultrasonicSensor() {
     let str = port.readUntil("\n");
     str = str.trim();
-    // Parse the distance value
     let parsedDistance = parseFloat(str);
     if (!isNaN(parsedDistance)) {
-        // If the parsed distance is a valid number
         distance = parsedDistance;
         setReverb(distance);
         delayDistance(distance);
@@ -284,11 +279,11 @@ function draw() {
         rect(circleX - circleSize / 2, circleY - circleSize / 2, circleSize, circleSize);
     } else if (currentShape === 'triangle') {
             const x1 = circleX;
-            const y1 = circleY - circleSize / 2; // Top point of the triangle
+            const y1 = circleY - circleSize / 2;
             const x2 = circleX - circleSize / 2;
-            const y2 = circleY + circleSize / 2; // Bottom left point
+            const y2 = circleY + circleSize / 2; 
             const x3 = circleX + circleSize / 2;
-            const y3 = circleY + circleSize / 2; // Bottom right point
+            const y3 = circleY + circleSize / 2; 
             
             triangle(x1, y1, x2, y2, x3, y3);
     }
